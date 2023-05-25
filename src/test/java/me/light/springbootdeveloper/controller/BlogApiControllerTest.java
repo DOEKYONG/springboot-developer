@@ -3,6 +3,7 @@ package me.light.springbootdeveloper.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.light.springbootdeveloper.domain.Article;
 import me.light.springbootdeveloper.dto.AddArticleRequest;
+import me.light.springbootdeveloper.dto.UpdateArticleRequest;
 import me.light.springbootdeveloper.repository.BlogRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -135,13 +136,47 @@ class BlogApiControllerTest {
                 .build());
 
         // when
-        ResultActions resultActions = mockMvc.perform(delete(url,savedArticle.getId()))
+         mockMvc.perform(delete(url,savedArticle.getId()))
                 .andExpect(status().isOk());
 
         // then
         List<Article> articles = blogRepository.findAll();
 
         assertThat(articles).isEmpty();
+    }
+
+    @DisplayName("updateArticle: 블로그 글 수정에 성공한다.")
+    @Test
+    public void updateArticle() throws Exception {
+        // given
+        final String url = "/api/articles/{id}";
+        final String title = "title";
+        final String content = "content";
+
+        Article savedArticle = blogRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+
+        final String updateTitle = "upTitle";
+        final String updateContent = "upContent";
+
+        UpdateArticleRequest updateRequest = new UpdateArticleRequest(updateTitle,updateContent);
+
+        String request = objectMapper.writeValueAsString(updateRequest);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(put(url,savedArticle.getId())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(request));
+
+        // then
+        resultActions.andExpect(status().isOk());
+        Article article = blogRepository.findById(savedArticle.getId()).get();
+        assertThat(article.getTitle()).isEqualTo(updateTitle);
+        assertThat(article.getContent()).isEqualTo(updateContent);
+
+
     }
 
 }
