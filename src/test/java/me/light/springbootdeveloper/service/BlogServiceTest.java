@@ -1,6 +1,5 @@
 package me.light.springbootdeveloper.service;
 
-import lombok.RequiredArgsConstructor;
 import me.light.springbootdeveloper.domain.Article;
 
 import static org.assertj.core.api.Assertions.as;
