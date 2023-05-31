@@ -8,6 +8,7 @@ import me.light.springbootdeveloper.dto.UpdateArticleRequest;
 import me.light.springbootdeveloper.repository.BlogRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor // final 이 붙거나 @NotNull 이 붙은 필드의 생성자 추가
@@ -37,7 +38,7 @@ public class BlogService {
     public Article update(long id , UpdateArticleRequest request) {
         Article article = blogRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found:" + id));
-        article.update(request.getTitle(), request.getContent());
+        article.update(request.getTitle(), request.getContent(), LocalDateTime.now());
         return article;
     }
 }
