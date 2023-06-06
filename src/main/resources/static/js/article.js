@@ -13,7 +13,6 @@ if(deleteButton) {
                 location.replace('/articles');
             });
     });
-
 }
 
 if(modifyButton) {
