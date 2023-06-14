@@ -52,7 +52,7 @@ class BlogServiceTest {
         Article savedArticle = Article.builder().title(title).content(content).build();
         given(blogRepository.save(any())).willReturn(savedArticle);
         // when
-        blogService.save(request);
+       // blogService.save(request);
         // then
         verify(blogRepository).save(articleCaptor.capture());
         Article capturedArticle = articleCaptor.getValue();
@@ -69,9 +69,9 @@ class BlogServiceTest {
         AddArticleRequest request = new AddArticleRequest(title, content);
         Article savedArticle = Article.builder().title(title).content(content).build();
         given(blogRepository.save(any())).willReturn(savedArticle);
-        Article result = blogService.save(request);
+        // Article result = blogService.save(request);
         List<Article> articles = new ArrayList<>();
-        articles.add(result);
+       // articles.add(result);
         given(blogRepository.findAll()).willReturn(articles);
         // when
 

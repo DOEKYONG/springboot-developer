@@ -1,22 +1,25 @@
 package me.light.springbootdeveloper.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Entity
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@NoArgsConstructor
+@Entity
 public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",updatable = false)
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @Column(name = "title", nullable = false)
@@ -25,24 +28,26 @@ public class Article {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @CreatedDate // 엔티티가 생성될 때 생성 시간 저장
+    @Column(name = "author", nullable = false)
+    private String author;
+
+    @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @LastModifiedDate // 엔티기 수정될 때 수정 시간 저장
+    @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Builder
-    public Article(String title, String content){
+    public Article(String author, String title, String content) {
+        this.author = author;
         this.title = title;
         this.content = content;
     }
 
-    public void update(String title, String content, LocalDateTime updatedAt) {
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
-        this.updatedAt = updatedAt;
     }
-
 }
